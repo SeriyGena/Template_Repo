@@ -1,11 +1,12 @@
 [project]
-name = "shared_utilities"  # Name must be declared manually
-dynamic = ["version"]       # <-- dynamical version
+name = "shared_utilities"
 description = "My shared utilities package"
 requires-python = ">=3.8"
+dependencies = []
+dynamic = ["version"]
 
 [project.dynamic]
-version = {attr = "src.__version__"} # <-- here is the version finder
+version = {attr = "src.__version__"}
 
 [build-system]
 requires = ["setuptools>=61.0"]
