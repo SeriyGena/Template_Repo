@@ -1,13 +1,20 @@
-[project]
+[tool.poetry]
 name = "shared_utilities"
+version = "0.1.0"
 description = "My shared utilities package"
-requires-python = ">=3.8"
-dependencies = []
-dynamic = ["version"]
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "src"}]
 
-[project.dynamic]
-version = {attr = "src.__version__"}
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+black = "^23.0"
+flake8 = "^6.0"
+mypy = "^1.0"
 
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
