@@ -34,56 +34,86 @@ if ($confirm -ne "y" -and $confirm -ne "Y") {
     exit 0
 }
 
-# Check for Poetry
-$usePoetry = $false
+# Update pyproject.toml file directly (NO installation)
+Write-Host "Updating pyproject.toml file..."
+
+# Read current pyproject.toml with proper encoding
 try {
-    poetry --version | Out-Null
-    $usePoetry = $true
+    $content = Get-Content "pyproject.toml" -Raw -Encoding UTF8
 } catch {
-    # Poetry not available
+    Write-Host "Error: Could not read pyproject.toml file."
+    exit 1
 }
 
-if ($usePoetry) {
-    # Use Poetry to add packages
-    Write-Host "Using Poetry to add packages..."
-    foreach ($package in $installedPackages) {
-        $packageName = ($package -split "==")[0]
-        Write-Host "Adding: $packageName"
-        poetry add $packageName
-        if ($LASTEXITCODE -ne 0) {
-            Write-Host "Warning: Failed to add $packageName"
-        }
+# Filter packages and extract names/versions
+$filteredPackages = @()
+$developmentPackages = @()
+
+foreach ($package in $installedPackages) {
+    $parts = $package -split "=="
+    $name = $parts[0].ToLower()
+    $version = $parts[1]
+    
+    # Categorize packages
+    if ($name -match "(test|debug|jupyter|ipython|mypy|black|flake8|ruff|pytest)" -or 
+        $name -match "(build|setuptools|wheel|poetry|pip)" -or
+        $name -match "(dev|lint|format)") {
+        # Development/build tools go to dev dependencies
+        $developmentPackages += "`"$($parts[0])>=$version`""
+    } else {
+        # Production packages go to main dependencies
+        $filteredPackages += "`"$($parts[0])>=$version`""
     }
-} else {
-    # Manual update of pyproject.toml
-    Write-Host "Updating pyproject.toml manually..."
-    
-    # Read current pyproject.toml
-    $content = Get-Content "pyproject.toml" -Raw
-    
-    # Extract package names and versions
-    $dependencies = @()
-    foreach ($package in $installedPackages) {
-        $parts = $package -split "=="
-        $name = $parts[0]
-        $version = $parts[1]
-        $dependencies += "`"$name>=$version`""
-    }
-    
-    # Update dependencies section
-    $dependencyString = $dependencies -join ",`n    "
+}
+
+Write-Host "Categorized packages:"
+Write-Host "  Production dependencies: $($filteredPackages.Count)"
+Write-Host "  Development dependencies: $($developmentPackages.Count)"
+
+# Update main dependencies
+if ($filteredPackages.Count -gt 0) {
+    $dependencyString = $filteredPackages -join ",`n    "
     
     if ($content -match '(?s)dependencies\s*=\s*\[(.*?)\]') {
         $newDeps = "dependencies = [`n    $dependencyString`n]"
         $content = $content -replace '(?s)dependencies\s*=\s*\[.*?\]', $newDeps
+        Write-Host "  SUCCESS: Updated main dependencies section"
     } else {
-        Write-Host "Could not find dependencies section in pyproject.toml"
+        Write-Host "  ERROR: Could not find dependencies section in pyproject.toml"
         exit 1
     }
-    
-    # Write back to file
-    $content | Set-Content "pyproject.toml" -NoNewline
 }
 
-Write-Host "✅ Environment sync completed!"
-Write-Host "💡 Run .\scripts\install_dependencies.ps1 to install in a fresh environment."
+# Update dev dependencies
+if ($developmentPackages.Count -gt 0) {
+    $devDependencyString = $developmentPackages -join ",`n    "
+    
+    # Look for existing dev dependencies section
+    if ($content -match '(?s)\[project\.optional-dependencies\]\s*dev\s*=\s*\[(.*?)\]') {
+        $newDevDeps = "[project.optional-dependencies]`ndev = [`n    $devDependencyString`n]"
+        $content = $content -replace '(?s)\[project\.optional-dependencies\]\s*dev\s*=\s*\[.*?\]', $newDevDeps
+        Write-Host "  SUCCESS: Updated dev dependencies section"
+    } else {
+        # Add dev dependencies section if it doesn't exist
+        $devSection = "`n`n[project.optional-dependencies]`ndev = [`n    $devDependencyString`n]"
+        $content += $devSection
+        Write-Host "  SUCCESS: Added dev dependencies section"
+    }
+}
+
+# Write back to file with proper encoding (no BOM)
+try {
+    [System.IO.File]::WriteAllText("pyproject.toml", $content, [System.Text.UTF8Encoding]::new($false))
+    Write-Host "  SUCCESS: Successfully wrote pyproject.toml"
+} catch {
+    Write-Host "  ERROR: Error writing pyproject.toml: $_"
+    exit 1
+}
+
+Write-Host ""
+Write-Host "Environment sync completed!" -ForegroundColor Green
+Write-Host "pyproject.toml has been updated with current environment packages" -ForegroundColor Yellow
+Write-Host "Next steps:" -ForegroundColor Cyan
+Write-Host "   1. Review the updated pyproject.toml file" -ForegroundColor White
+Write-Host "   2. Run .\scripts\install_dependencies.ps1 to install in a fresh environment" -ForegroundColor White
+Write-Host "   3. Commit the changes to version control" -ForegroundColor White
