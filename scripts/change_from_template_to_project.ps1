@@ -3,7 +3,7 @@
 # Run this ONCE after cloning the template from GitHub
 # This script converts template files to project files and configures your workspace
 # 
-# Usage: .\scripts\change_from_template_to_project.ps1 -ProjectName "MyProject"
+# Usage: .\scripts\change_from_template_to_project.ps1 -ProjectName "project_name"
 #
 # Requirements:
 # - Run from project root directory
