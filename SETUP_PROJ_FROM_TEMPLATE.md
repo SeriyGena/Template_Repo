@@ -98,6 +98,8 @@ cd my-new-project
 .\scripts\install_dependencies.ps1
 ```
 
+> **📝 Note about poetry.lock**: This template includes a `poetry.lock` file, but **none of the template scripts use it**. The scripts use pip-based dependency management for simplicity. If you want to learn about Poetry workflow and exact reproducible builds, see `MANUAL_poetry.lock_README.md` for complete instructions on when and how to use Poetry instead of the template scripts.
+
 **What gets installed from pyproject.toml:**
 
 #### **Core Production Dependencies:**
