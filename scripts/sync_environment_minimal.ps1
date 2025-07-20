@@ -1,6 +1,6 @@
 # Sync current environment packages to pyproject.toml
 # Works with both Poetry and pip
-# Run from project root: .\scripts\sync_environment_minimal.ps1
+# Run from project root: .\scripts\sync_environment.ps1
 
 Write-Host "Syncing environment packages to pyproject.toml..."
 
