@@ -61,6 +61,10 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": false,
+    "isort.args": ["--profile", "black"],
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "jupyter.interactiveWindow.creationMode": "perFile",
     "jupyter.askForKernelRestart": false,
@@ -80,10 +84,11 @@
         "reportMissingTypeStubs": "none"
     },
     "[python]": {
-        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-            "source.fixAll.ruff": "explicit"
+            "source.organizeImports": "explicit",
+            "source.fixAll.flake8": "explicit"
         }
     }
 }
