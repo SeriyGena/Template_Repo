@@ -10,10 +10,10 @@
     "ms-vscode.vscode-json",
     "redhat.vscode-yaml",
     "mhutchie.git-graph",
-    "yzhang.markdown-all-in-one"
+    "yzhang.markdown-all-in-one",
+    "ms-python.isort"
   ],
   "unwantedRecommendations": [
     "ms-python.pylint"
   ]
 }
-
