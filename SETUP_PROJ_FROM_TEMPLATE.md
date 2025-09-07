@@ -102,10 +102,20 @@ py -3.13 -m venv .venv
 
 ---
 
-## **📥 STEP 4: Install Project Dependencies**
 
-### **4.1 Install All Dependencies in Development Mode**
+## **📥 STEP 4: Install Project Dependencies (REQUIRED)**
+
+### **4.1 Use the Automated Installer Script**
 **Copy and paste this (make sure .venv is activated):**
+```powershell
+./scripts/install_dependencies.ps1
+```
+This script will:
+- Install all required dependencies in development mode
+- Run `pip install -e .[dev]` for you
+- Check for common issues and provide helpful output
+
+**If you prefer manual installation:**
 ```powershell
 pip install -e .[dev]
 ```
@@ -115,7 +125,16 @@ pip install -e .[dev]
 - The dot (.) refers to the current directory
 - `[dev]` includes both production and development packages
 
-### **4.2 Common Issues and Solutions**
+### **4.2 Sync and Check Your Environment (RECOMMENDED)**
+After installing dependencies, run the environment sync script to verify everything is up to date:
+```powershell
+./scripts/sync_environment.ps1
+```
+This will:
+- Check for missing or outdated packages
+- Help keep your environment consistent with the project requirements
+
+### **4.3 Common Issues and Solutions**
 
 **If you see "authors must be object" error:**
 The pyproject.toml file should be automatically fixed during conversion. If not:
@@ -306,6 +325,52 @@ python -m mypy src/
 
 ---
 
+## **🔧 STEP 6: Finalize VS Code Configuration (OPTIONAL)**
+
+### **6.1 Remove "_minimal" from Configuration Files**
+The template includes minimal configuration files that need to be renamed for full functionality:
+
+```powershell
+# Navigate to VS Code and Copilot directories
+cd .vscode
+Rename-Item "extensions_minimal.json" "extensions.json" -ErrorAction SilentlyContinue
+Rename-Item "launch_minimal.json" "launch.json" -ErrorAction SilentlyContinue  
+Rename-Item "settings_minimal.json" "settings.json" -ErrorAction SilentlyContinue
+cd ..\.copilot
+Rename-Item "promts_minimal.md" "promts.md" -ErrorAction SilentlyContinue
+cd ..
+```
+
+### **6.2 What These Files Do**
+
+**📁 `.vscode/extensions.json`**
+- **Purpose**: Automatically recommends essential extensions when someone opens your project
+- **Contains**: Python, Black formatter, Flake8, MyPy, Jupyter, PowerShell, Copilot, and productivity extensions
+- **Why needed**: Ensures all team members have the same development tools
+
+**🐛 `.vscode/launch.json`**  
+- **Purpose**: Provides 8 pre-configured debug scenarios for your Python project
+- **Contains**: Debug current file, main module, run tests, FastAPI server, Django server, etc.
+- **Why needed**: One-click debugging without manual configuration
+
+**⚙️ `.vscode/settings.json`**
+- **Purpose**: Configures VS Code workspace settings for consistent development experience
+- **Contains**: Python interpreter path, formatter settings, linting rules, Jupyter preferences
+- **Why needed**: Ensures code formatting, linting, and environment settings are identical for all developers
+
+**🤖 `.copilot/promts.md`**
+- **Purpose**: Provides standardized prompts and best practices for GitHub Copilot usage
+- **Contains**: Code generation templates, testing patterns, project-specific coding standards
+- **Why needed**: Maintains code quality and consistency when using AI assistance
+
+### **6.3 Why "_minimal" Versions Exist in Templates**
+- **Avoids conflicts** during template cloning and conversion
+- **Prevents VS Code** from immediately applying settings before project customization
+- **Allows gradual setup** - you can review and modify before activation
+- **Template flexibility** - different projects may need different configurations
+
+---
+
 ## **🎉 Success! You Now Have:**
 
 ✅ **Isolated Python environment** (.venv with your chosen Python version)  
@@ -313,6 +378,8 @@ python -m mypy src/
 ✅ **Your personalized project** (converted from template)  
 ✅ **All dependencies installed** (production + development tools)  
 ✅ **Quality tools configured** (Black, Flake8, MyPy, pytest)  
+✅ **VS Code debugging & settings** (8 debug configs + workspace settings)
+✅ **AI-assisted development** (Copilot prompts + coding standards)
 ✅ **Ready-to-use project structure** 
 
 **Start coding immediately - your professional Python development environment is ready!** 🎉
