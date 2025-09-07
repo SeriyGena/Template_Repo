@@ -1,107 +1,94 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        
-        {
-            "name": "Python: Current File",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-            "justMyCode": true
-        },
-        {
-            "name": "Python: Main Module",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "src.main",
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-            "justMyCode": true
-        },
-        {
-            "name": "Python: Module (src)",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "src",
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-            "justMyCode": true
-        },
-        {
-            "name": "Python: Run Tests",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "pytest",
-            "args": [
-                "test/",
-                "-v",
-                "--tb=short"
-            ],
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-            "justMyCode": false
-        },
-        {
-            "name": "Python: Run Single Test",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "pytest",
-            "args": [
-                "${file}",
-                "-v",
-                "--tb=short"
-            ],
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-            "justMyCode": false
-        },
-        {
-            "name": "Python: Debug with Arguments",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${file}",
-            "args": [],
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-            "justMyCode": true
-        },
-        {
-            "name": "Python: FastAPI",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "src.main:app",
-                "--reload",
-                "--host", "localhost",
-                "--port", "8000"
-            ],
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-            "justMyCode": true
-        },
-        {
-            "name": "Python: Django",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/manage.py",
-            "args": [
-                "runserver",
-                "127.0.0.1:8000"
-            ],
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
-            "justMyCode": true
+    //================================================================
+    // General & UI Settings
+    //================================================================
+    "workbench.colorTheme": "Atom One Dark",
+    "workbench.iconTheme": "material-icon-theme",
+    "explorer.confirmDelete": false,
+    "security.allowedUNCHosts": [
+        "isSHFS.intel.com"
+    ],
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "files.autoSave": "afterDelay", // Auto-save enabled
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/.venv": false
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/.venv": true
+    },
+    "editor.lineNumbers": "on", // Line numbers enabled for editor
+
+    //================================================================
+    // Git & GitHub Copilot Settings
+    //================================================================
+    "github.copilot.enable": {
+        "*": true,
+        "markdown": true,
+        "json": true,
+        "yaml": true,
+        "jsonc": true,
+        "python": true,
+        "plaintext": false
+    },
+    "git.autofetch": true,
+    "git.openRepositoryInParentFolders": "always",
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "editor.inlineSuggest.edits.showCollapsed": true,
+    "editor.inlineSuggest.edits.allowCodeShifting": "always",
+    "editor.inlineSuggest.edits.renderSideBySide": "auto",
+
+    //================================================================
+    // Python & Jupyter Settings
+    //================================================================
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe", // Python environment path setting
+    "python.terminal.activateEnvironment": true, // Environment activation in terminal
+    "python.createEnvironment.trigger": "off",
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": false,
+    "isort.args": ["--profile", "black"],
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "jupyter.interactiveWindow.creationMode": "perFile",
+    "jupyter.askForKernelRestart": false,
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "notebook.output.textLineLimit": 100,
+    "notebook.lineNumbers": "on",
+
+    //================================================================
+    // Language-Specific Settings for Python
+    //================================================================
+    "python.analysis.languageServerMode": "default",
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingTypeStubs": "none"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit",
+            "source.fixAll.flake8": "explicit"
         }
-    ]
+    }
 }
