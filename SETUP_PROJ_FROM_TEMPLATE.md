@@ -382,6 +382,49 @@ cd ..
 ✅ **AI-assisted development** (Copilot prompts + coding standards)
 ✅ **Ready-to-use project structure** 
 
+⚙️ VS Code Settings Guide
+Settings Priority
+VS Code uses a hierarchical system for its settings, where more specific settings override general ones. This gives you flexibility to configure your environment for different projects and tasks.
+
+Workspace Settings (.code-workspace) - Highest Priority. These settings apply to a group of folders opened in a single workspace.
+
+Folder Settings (.vscode/settings.json) - Medium Priority. These settings apply to a specific folder and its contents. They are ideal for team collaboration, as they can be committed to version control.
+
+User Settings - Lowest Priority. These are your personal global settings that apply to all projects and workspaces you open in VS Code. They act as a base layer that can be overridden by higher-priority settings.
+
+User Settings
+What Are They?
+User Settings are your personal preferences that apply by default to all your projects. This includes themes, font sizes, global extensions, and general editor behavior.
+
+How to Access Them?
+You can access your User Settings in a few ways:
+
+Via the VS Code UI:
+
+Press Ctrl+, (or File → Preferences → Settings).
+
+Click the "User" tab at the top of the window.
+
+Via the Command Palette:
+
+Press Ctrl+Shift+P.
+
+Start typing "Preferences: Open User Settings (JSON)" and select the command.
+
+What to Store Where?
+In User Settings
+Personal Preferences: Your preferred theme, font size, and editor behavior.
+
+Global Extensions: Extensions you want to use across all projects.
+
+Default Settings: General rules that will apply unless a more specific setting overrides them.
+
+In Workspace/Folder Settings
+Project-Specific Configurations: Settings relevant only to the current project (e.g., the path to a virtual environment, language-specific formatting rules).
+
+Team-Shared Settings: The ideal place for settings that should be consistent for all team members. The settings.json file can be committed to the repository to ensure everyone works in the same environment.
+
+
 **Start coding immediately - your professional Python development environment is ready!** 🎉
 
 ---
